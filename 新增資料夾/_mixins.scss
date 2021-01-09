@@ -1,0 +1,292 @@
+//==================================================
+// 関数
+//==================================================
+
+// メディアクエリ /////
+/*
+ * メディアクエリの処理を変更する場合は
+ * jsのmatchMediaも修正が必要
+ */
+@mixin u-max-screen($break-point) {
+  @media screen and (max-width: $break-point + px) {
+    @content;
+  }
+}
+
+@mixin u-min-screen($break-point) {
+  @media screen and (min-width: $break-point + px) {
+    @content;
+  }
+}
+
+@mixin u-screen($break-point-min, $break-point-max) {
+  @media screen and (min-width: $break-point-min + px) and (max-width: $break-point-max + px) {
+    @content;
+  }
+}
+
+// 基本のブレイクポイント
+@mixin u-max-default {
+  @media screen and (max-width: $breakpoint-design + px) {
+    @content;
+  }
+}
+
+// 範囲指定
+@mixin u-max-default-bet($max) {
+  @media screen and (min-width: $breakpoint-design + 0.1 + px) and (max-width: $max + px) {
+    @content;
+  }
+}
+
+// 範囲指定
+@mixin u-max-tablet() {
+  @include u-max-default-bet($breakpoint-tablet) {
+    @content;
+  }
+}
+
+// 範囲指定
+@mixin u-max-tablet2() {
+  @include u-max-default-bet(1150) {
+    @content;
+  }
+}
+
+// 欧文フォント2種類 /////
+@mixin f-josefin-SB {
+  font-family: josefin-sans, sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+@mixin f-josefin-B {
+  font-family: josefin-sans, sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+// 日本語フォント /////
+@mixin f-yugothic-M {
+  font-family: "游ゴシック", "Yu Gothic", "Yu Gothic M", YuGothic, "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", Droid Sans, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+// サイズ計算 /////
+@function sizeVW($px, $width) {
+  @return $px / $width * 100 + vw;
+}
+
+@function sizeVW-default($px) {
+  @return $px / $breakpoint-design-sp * 100 + vw;
+}
+
+@function sizeVW-tablet($px) {
+  @return $px / $breakpoint-tablet * 100 + vw;
+}
+
+@function sizeVW-tablet2($px) {
+  @return $px / 1150 * 100 + vw;
+}
+
+@function sizePX-half($px) {
+  @return $px / 2 + px;
+}
+
+@function sizePercent($a, $b) {
+  @return percentage($a / $b);
+}
+
+@function sizePercent-default($px) {
+  @return percentage($px / $breakpoint-design-sp);
+}
+
+@function sizeRatio($a, $b) {
+  @return ($a / $b);
+}
+
+// テキスト
+// 英単語の禁則処理無効
+@mixin u-text-justfy {
+  text-align: justify;
+  text-justify: inter-ideograph;
+  word-break: break-all;
+}
+
+// float要素を囲む親要素の:afterに指定、IE8以上
+@mixin u-cf {
+  content: "";
+  clear: both;
+  height: 0;
+  display: block;
+  visibility: hidden;
+}
+
+@mixin u-disable-link {
+  cursor: default;
+  pointer-events: none;
+  text-decoration: none;
+}
+
+@mixin u-text-replace {
+  overflow: hidden;
+  text-indent: 100%;
+  white-space: nowrap;
+}
+
+@mixin u-font-size($size) {
+  font-size: $size + px;
+  font-size: ($size/10) + rem
+}
+
+@mixin u-font-size-half($size) {
+  font-size: $size / 2 + px;
+}
+
+.clearfix:after {
+  @include u-cf();
+}
+
+.disable-link {
+  @include u-disable-link();
+}
+
+.text-replace {
+  @include u-text-replace();
+}
+
+// spritesmithの半分サイズ関数
+@mixin u-retina-sprite-width($sprite) {
+  width: nth($sprite, 5) / 2;
+}
+
+// spritesmithの半分サイズ関数
+@mixin u-retina-sprite-width2left($sprite) {
+  left: nth($sprite, 5) / 2;
+}
+
+@mixin u-retina-sprite-height($sprite) {
+  height: nth($sprite, 6) / 2;
+}
+
+@mixin u-retina-sprite-position($sprite) {
+  $sprite-offset-x: nth($sprite, 3) / 2;
+  $sprite-offset-y: nth($sprite, 4) / 2;
+
+  background-position: $sprite-offset-x $sprite-offset-y;
+}
+
+@mixin u-retina-sprite-size($sprite) {
+  background-size: (nth($sprite, 7) / 2) (nth($sprite, 8) / 2);
+}
+
+@mixin u-retina-sprite-center-x($sprite) {
+  display: block;
+  left: 50%;
+  margin-left: -(nth($sprite, 5) / 2) / 2;
+  position: absolute;
+}
+
+@mixin u-retina-sprite-center($sprite) {
+  display: block;
+  left: 50%;
+  top: 50%;
+  margin-left: -(nth($sprite, 5) / 2) / 2;
+  margin-top: -(nth($sprite, 6) / 2) / 2;
+  position: absolute;
+}
+
+@mixin u-retina-sprite($sprite) {
+  //@include u-sprite-image($sprite)
+  @include u-retina-sprite-position($sprite);
+  @include u-retina-sprite-width($sprite);
+  @include u-retina-sprite-height($sprite);
+  @include u-retina-sprite-size($sprite);
+}
+
+/*
+ * ホバー shadow
+ */
+@mixin transition-hover-shadow() {
+  transition: box-shadow 0.3s;
+}
+
+@mixin css-hover-shadow() {
+  box-shadow: 4px 4px 16px 0 rgba(0, 0, 0, 0.2); // 光彩
+}
+
+@mixin u-hover-shadow() {
+  .pc & {
+    @include transition-hover-shadow();
+  }
+
+  .pc &:hover, &.is-hover-on {
+    @include css-hover-shadow();
+  }
+}
+
+/*
+ * ホバー opacity
+ */
+@mixin transition-hover-opacity() {
+  transition: opacity 0.3s;
+}
+
+@mixin css-hover-opacity() {
+  opacity: 0.7;
+}
+
+@mixin u-hover-opacity() {
+  .pc & {
+    @include transition-hover-opacity();
+  }
+
+  .pc &:hover, &.is-hover-on {
+    @include css-hover-opacity();
+  }
+}
+
+/*
+ * ホバー font blue
+ */
+@mixin transition-hover-text-blue() {
+  transition: color 0.3s;
+}
+
+@mixin css-hover-text-blue() {
+  color: #00b4ff;
+}
+
+@mixin u-hover-text-blue() {
+  .pc & {
+    @include transition-hover-text-blue();
+  }
+
+  .pc &:hover, &.is-hover-on {
+    @include css-hover-text-blue();
+  }
+}
+
+@mixin set-bgimg($url, $settingScale: 1 ) {
+  background-image: url($url);
+  @include get-img-size($url, $settingScale);
+}
+
+@mixin get-img-size( $url, $settingScale: 1 ) {
+  width: width($url, 1 / $settingScale);
+  height: height($url, 1 / $settingScale);
+}
+
+/*
+ * Hide only visually, but have it available for screen readers
+ */
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding:0;
+  border:0;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+}

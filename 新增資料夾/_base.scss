@@ -1,0 +1,171 @@
+//==================================================
+// フォント設定
+//==================================================
+@font-face {
+  font-family: "Yu Gothic M";
+  font-weight: normal;
+  src: local("YuGothic-Medium"), local("Yu Gothic Medium"), local("YuGothic-Regular");
+}
+
+@font-face {
+  font-family: "Yu Gothic M";
+  font-weight: bold;
+  src: local("YuGothic-Bold"), local("Yu Gothic Bold"), local("Yu Gothic");
+}
+
+@font-face {
+  font-family: "HiraginoCustom";
+  font-weight: 100;
+  src: local("HiraginoSans-W1"), local("Hiragino Sans");
+}
+
+@font-face {
+  font-family: "HiraginoCustom";
+  font-weight: 200;
+  src: local("HiraginoSans-W2"), local("Hiragino Sans");
+}
+
+@font-face {
+  font-family: "HiraginoCustom";
+  font-weight: 300;
+  src: local("HiraginoSans-W3"), local("Hiragino Sans");
+}
+
+@font-face {
+  font-family: "HiraginoCustom";
+  font-weight: 400;
+  src: local("HiraginoSans-W3"), local("Hiragino Sans");
+}
+
+@font-face {
+  font-family: "HiraginoCustom";
+  font-weight: 500;
+  src: local("HiraginoSans-W5"), local("Hiragino Sans");
+}
+
+@font-face {
+  font-family: "HiraginoCustom";
+  font-weight: 600;
+  src: local("HiraginoSans-W6"), local("Hiragino Sans");
+}
+
+@font-face {
+  font-family: "HiraginoCustom";
+  font-weight: 700;
+  src: local("HiraginoSans-W6"), local("Hiragino Sans");
+}
+
+@font-face {
+  font-family: "HiraginoCustom";
+  font-weight: 800;
+  src: local("HiraginoSans-W7"), local("Hiragino Sans");
+}
+
+@font-face {
+  font-family: "HiraginoCustom";
+  font-weight: 900;
+  src: local("HiraginoSans-W8"), local("Hiragino Sans");
+}
+
+//==================================================
+// GLOBAL設定
+//==================================================
+
+/* フォントサイズリセット ベース10px */
+html, body {
+  font-size: 62.5%;
+}
+
+body {
+  $fontfamily: a-otf-midashi-go-mb31-pr6n, "游ゴシック", "Yu Gothic", "Yu Gothic M", YuGothic, "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", Droid Sans, sans-serif;
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+  font-family: $fontfamily;
+  font-weight: 600;
+  font-style: normal;
+  letter-spacing: 0.02em;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  //overflow-y: scroll;
+  @include u-font-size(14);
+  font-feature-settings: 'pkna';
+  visibility: hidden;
+
+  .wf-active & {
+    visibility: visible;
+  }
+
+  .pc & {
+    //position: fixed;
+    //overflow-x: hidden;
+    //overflow-y: scroll;
+  }
+
+  @include u-max-default() {
+    font-size: sizeVW-default(26);
+  }
+  ::placeholder, select {
+    font-family: $fontfamily;
+  }
+}
+
+/*
+// font-family: 'Noto Serif JP', serif; 500 600
+// font-family: 'Cormorant Unicase', serif; 700
+*/
+
+img {
+  vertical-align: bottom;
+  user-select: none;
+}
+
+hr {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+svg {
+  display: block;
+}
+
+blockquote {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+input[type=radio], input[type=checkbox] {
+  margin: 0;
+  padding: 0;
+}
+
+iframe {
+  vertical-align: middle;
+}
+
+figure {
+  margin: 0;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+}
+
+main {
+  display: block;
+}
+
+pre {
+  margin: 0;
+  padding: 0;
+  color: rgb(0, 0, 0);
+  font-family: "Noto Serif JP", "ヒラギノ角ゴシック", Hiragino Sans, "ヒラギノ角ゴ Pro", Hiragino Kaku Gothic Pro, "游ゴシック", "Yu Gothic", "Yu Gothic M", YuGothic, "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", Droid Sans, sans-serif;
+  font-weight: 500;
+}
+
+a {
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+}
