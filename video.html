@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>影音專區 - 洗腎⼩百科 Dialysis Micropedia</title>
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+	<link rel="stylesheet" href="css/style.min.css">
+	<link rel="stylesheet" href="css/video.min.css">
+</head>
+
+<body>
+	<div id="app">
+		<navbar curr="/video.html"></navbar>
+		<a href="#" @click="test123()">qwer</a>
+
+		<section class="page">
+			<h2 class="title"><img src="images/video-title.svg" alt="影音專區"></h2>
+			<div class="container-xl flex-wrapper ai-center px-lg-3">
+				<div class="col tab">
+					<span class="tab-item active">衛教資訊</span>
+					<span class="tab-item">腹膜透析</span>
+					<span class="tab-item">腹膜透析</span>
+					<span class="tab-item">腹膜透析</span>
+				</div>
+				<div class="col-12 col-md-2 fz-12 fz-lg-7 ta-right mb-2">第 1/11 頁</div>
+			</div>
+			<div class="container-xl flex-wrapper box">
+				<div v-for="item in videos" class="col-6 col-md-3 w-c6 w-md-c3 video-item">
+					<div class="thumbnail">
+						<a :href="'https://www.youtube.com/watch?v='+item.youtubeId">
+							<img :src="'http://img.youtube.com/vi/'+item.youtubeId+'/mqdefault.jpg'" alt="">
+						</a>
+					</div>
+					<a :href="'https://www.youtube.com/watch?v='+item.youtubeId">{{item.title}}</a>
+					{{youtubeImage('DXUAyRRkI6k')}}
+				</div>
+			</div>
+
+		</section>
+
+		<copyright></copyright>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.0.5/vue.global.prod.js"></script>
+	<script src="js/components.js"></script>
+	<script>
+		const app = Vue.createApp({
+			data() {
+				return {
+					videos: [
+						{ title: 'cat01', youtubeId: 'DXUAyRRkI6k' },
+						{ title: 'cute cat', youtubeId: '5530I_pYjbo' },
+						{ title: 'cat', youtubeId: '7Nn7NZI_LN4' },
+						{ title: 'cats', youtubeId: 'rHLLDOyZepY' },
+						{ title: 'cat01', youtubeId: 'DXUAyRRkI6k' },
+						{ title: 'cute cat', youtubeId: '5530I_pYjbo' },
+						{ title: 'cat', youtubeId: '7Nn7NZI_LN4' },
+						{ title: 'cats', youtubeId: 'rHLLDOyZepY' },
+					]
+				}
+			},
+			methods: {
+				test(url) {
+					var xmlHttp;
+					if (window.ActiveXObject) {
+						xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+					}
+					else if (window.XMLHttpRequest) {
+						xmlHttp = new XMLHttpRequest();
+					}
+					try {
+						xmlHttp.open("Get", url, false);
+						xmlHttp.send();
+					} catch (error) {
+						console.log(error);
+					}
+
+					if (xmlHttp.status == 404)
+						return false;
+					else
+						return true;
+
+				},
+				youtubeImage(youtubeId) {
+					let pic_url = 'http://img.youtube.com/vi/DXUAyRRkI6k/mqdefault.jpg'
+					$.ajax({
+						url: pic_url,
+						success: function () {
+							return 'ok'
+						}, error: function (xhr, error, ex) {
+							console.log(xhr.status);
+							if (xhr.status == '404') {
+								return '404'
+							}
+						}
+
+					})
+				},
+				test123(){
+					$.ajax({
+						url:'https://picsum.photos/v2/list',
+						success(e){
+							console.log(e);
+						}
+					})
+				}
+			}
+		})
+		addVueComponents(app)
+		app.mount('#app')
+	</script>
+</body>
+
+</html>
