@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		.hidden {
+			display: none;
+		}
+	</style>
+</head>
+
+<body>
+	<h3>如果關鍵字有顯示在畫面上</h3>
+	<button onclick="filterData(2,'aaa')">篩選出aaa</button>
+	<button onclick="filterData(2,'bbb')">篩選出bbb</button>
+	<button onclick="filterData(2,'ccc')">篩選出ccc</button>
+	<button onclick="showAll()">取消篩選</button>
+
+	<h4 class="message"></h4>
+
+	<table id="data" border="1">
+		<tr class="title">
+			<th>ID</th>
+			<th>Name</th>
+			<th>Keyword</th>
+		</tr>
+		<tr>
+			<td>1</td>
+			<td>item01</td>
+			<td>aaa</td>
+		</tr>
+		<tr>
+			<td>2</td>
+			<td>item02</td>
+			<td>bbb</td>
+		</tr>
+		<tr>
+			<td>3</td>
+			<td>item03</td>
+			<td>ccc</td>
+		</tr>
+		<tr>
+			<td>4</td>
+			<td>item04</td>
+			<td>aaa,bbb,ccc</td>
+		</tr>
+		<tr>
+			<td>5</td>
+			<td>item05</td>
+			<td>aaa,bbb</td>
+		</tr>
+		<tr>
+			<td>6</td>
+			<td>item06</td>
+			<td>bbb,ccc</td>
+		</tr>
+		<tr>
+			<td>7</td>
+			<td>item07</td>
+			<td>aaa,ccc</td>
+		</tr>
+		<tr>
+			<td>8</td>
+			<td>item08</td>
+			<td>aaa</td>
+		</tr>
+		<tr>
+			<td>9</td>
+			<td>item09</td>
+			<td>bbb</td>
+		</tr>
+		<tr>
+			<td>10</td>
+			<td>item10</td>
+			<td>ccc</td>
+		</tr>
+	</table>
+
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+		function filterData(colNo, target) {
+			// 接收2個參數：
+			// colNo = 為要篩選第幾欄，例如:要比對的是第3欄的"Keywords"，因為運用時是用索引值 所以要輸入2(索引值從0開始)
+			// target = 要篩選的關鍵字
+
+			var items = $('#data tr:not(.title)');
+
+			// 先隱藏所有項目(所有項目添加隱藏的class)
+			items.addClass('hidden');
+
+			// 進行篩選(符合的顯示出來)
+			for (var i = 0; i < items.length; i++) {  //比對每一筆項目
+				var thisItem = items.eq(i);
+				var keywords = thisItem.find('td').eq(colNo).text().split(',');  //分割關鍵字(如果關鍵字這個欄位是存了多個內容的話)
+
+				// 對每個關鍵字進行比對
+				$.each(keywords, function () {
+					// 如果符合目標關鍵字，則移除隱藏的class
+					if (this == target) {
+						thisItem.removeClass('hidden');
+						return false;  //已經確定要顯示了，跳出迴圈
+					}
+				})
+			}
+			$('.message').text('目前篩選： ' + target);
+		}
+		// 取消篩選的function
+		function showAll() {
+			$('#data tr').removeClass('hidden');
+			$('.message').text('');
+		}
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        nav {
+            width: 100%;
+            height: 50px;
+            background-color: #fa0;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            line-height: 50px;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            position: relative;
+        }
+
+        nav a {
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .dropdown-menu {
+            display: none;
+            background-color: #fcc378;
+
+            position: absolute;
+            /* width: 100%; */
+            width: 300px;
+            flex-direction: column;
+            left: 0;
+        }
+
+        .dropdown-menu.sub {
+            top: 0;
+            left: 300px;
+        }
+        nav li:hover {
+            background-color: #ff97a8;
+        }
+        nav li:hover>a+.dropdown-menu,
+        .dropdown-menu:hover {
+            display: flex;
+            animation: fade-in .6s;
+        }
+
+        /* nav li:hover .dropdown-menu {
+                display: flex;
+
+            } */
+        .menu {
+            /* position: relative; */
+        }
+
+        .menu>li {
+            position: relative;
+        }
+
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <ul class="menu">
+            <li><a href="#">MENU 1</a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">sub menu</a></li>
+                    <li><a href="#">sub menu</a></li>
+                    <li><a href="#">sub menu</a></li>
+                    <li><a href="#">sub menu</a></li>
+                    <li><a href="#">sub menu</a></li>
+                    <li><a href="#">sub menu*</a>
+                        <ul class="dropdown-menu sub">
+                            <li><a href="#">sub menu2</a></li>
+                            <li><a href="#">sub menu2*</a>
+                                <ul class="dropdown-menu sub">
+                                    <li><a href="#">sub menu3</a></li>
+                                    <li><a href="#">sub menu3</a></li>
+                                    <li><a href="#">sub menu3</a></li>
+                                    <li><a href="#">sub menu3</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">sub menu2</a></li>
+                            <li><a href="#">sub menu2</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">sub menu</a></li>
+                </ul>
+            </li>
+            <li><a href="#">MENU 2</a></li>
+            <li>
+                <a href="#">MENU 3</a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">sub menu*</a>
+                        <ul class="dropdown-menu sub">
+                            <li><a href="#">sub menu2</a></li>
+                            <li><a href="#">sub menu2</a></li>
+                            <li><a href="#">sub menu2</a></li>
+                            <li><a href="#">sub menu2</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">sub menu</a></li>
+                    <li><a href="#">sub menu</a></li>
+                    <li><a href="#">sub menu</a></li>
+                </ul>
+            </li>
+
+            <li><a href="#">MENU 4</a></li>
+        </ul>
+    </nav>
+</body>
+
+</html>

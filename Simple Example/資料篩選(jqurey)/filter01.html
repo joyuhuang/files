@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		.hidden {
+			display: none;
+		}
+	</style>
+</head>
+
+<body>
+	<h3>如果關鍵字沒有要顯示在畫面上，就藏在data-裡</h3>
+	<button class="filter-btn" data-keyword="aaa">篩選出aaa</button>
+	<button class="filter-btn" data-keyword="bbb">篩選出bbb</button>
+	<button class="filter-btn" data-keyword="ccc">篩選出ccc</button>
+	<button onclick="showAll()">取消篩選</button>
+
+	<h4 class="message"></h4>
+
+	<ul id="data">
+		<li data-keyword="aaa">item01-a</li>
+		<li data-keyword="bbb">item02-b</li>
+		<li data-keyword="ccc">item03-c</li>
+		<li data-keyword="aaa,bbb,ccc">item04-a b c</li>
+		<li data-keyword="aaa,bbb">item05-a b</li>
+		<li data-keyword="bbb,ccc">item06-b c</li>
+		<li data-keyword="aaa,ccc">item07-a c</li>
+		<li data-keyword="aaa">item08-a</li>
+		<li data-keyword="bbb">item09-b</li>
+		<li data-keyword="ccc">item10-c</li>
+	</ul>
+
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+		$('.filter-btn').click(function () {
+			// 取得要篩選的關鍵字
+			var target = $(this).data('keyword');
+
+			var items = $('#data li');
+
+			// 先隱藏所有項目(所有項目添加隱藏的class)
+			items.addClass('hidden');
+
+			// 進行篩選(符合的顯示出來)
+			for (var i = 0; i < items.length; i++) {  //比對每一筆項目
+				var thisItem = $('#data li').eq(i);
+				var keywords = thisItem.data('keyword').split(',');  //分割關鍵字(如果關鍵字這個欄位是存了多個內容的話)
+
+				// 對每個關鍵字進行比對
+				$.each(keywords, function () {
+					// 如果符合目標關鍵字，則移除隱藏的class
+					if (this == target) {
+						thisItem.removeClass('hidden');
+						return false;  //已經確定要顯示了，跳出迴圈
+					}
+				})
+			}
+			$('.message').text('目前篩選： ' + target);
+		})
+		// 取消篩選的function
+		function showAll() {
+			$('#data li').removeClass('hidden');
+			$('.message').text('');
+
+		}
+	</script>
+</body>
+
+</html>
