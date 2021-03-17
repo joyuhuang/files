@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+	<header>
+		<div id="head">
+			<a class="logo" href="index.html"><img src="https://via.placeholder.com/90x90?text=Logo" alt=""></a>
+			<i class="fas fa-bars fa-3x"></i>
+		</div>
+		<ul id="mainNav">
+			<li><a href="#">品牌故事</a></li>
+			<li><a href="#">最新消息</a></li>
+			<li id="logo-desk"><a class="logo" href="index.html"><img src="https://via.placeholder.com/90x90?text=Logo" alt=""></a></li>
+			<li class="click-on">美食饗宴
+				<ul>
+					<li><a href="#">美味餐點</a></li>
+					<li><a href="#">漢堡系列</a></li>
+					<li><a href="#">三明治系列</a></li>
+					<li><a href="#">披薩系列</a></li>
+					<li><a href="#">義大利麵系列</a></li>
+					<li><a href="#">飲料系列</a></li>
+				</ul>
+			</li>
+			<li><a href="#">聯絡我們</li></a>
+		</ul>
+	</header>
+	<section style="background-color: beige; height: 800px;">
+	</section>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script>
+		function mainNavEff() {
+			if (window.innerWidth > 480) {
+				$('#mainNav').css('display', '');
+				$('#mainNav > li').children('ul').hide();
+				$('#mainNav > li').off('mouseenter mouseleave click')
+				$('#mainNav > li').hover(function () {
+					$(this).children('ul').stop().slideToggle('fast')
+				})
+			} else {
+				$('#mainNav').hide();
+				$('.fa-bars').off('click');  /* 因每一次點案就會觸發一次所以把它中斷調 */
+				$('.fa-bars').click(function () {
+					$('#mainNav').stop().slideToggle('fast')
+				})
+				$('#mainNav > li').off('mouseenter mouseleave click')
+				$('#mainNav > li').click(function () {
+					$(this).children('ul').stop().slideToggle('fast')
+				})
+			}
+		}
+		$(function () {
+			mainNavEff();
+			$(window).resize(function () {
+				mainNavEff();
+			})
+		})
+	</script>
+</body>
+
+</html>
