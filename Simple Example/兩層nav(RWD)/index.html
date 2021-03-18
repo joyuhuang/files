@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-tw">
 
 <head>
 	<meta charset="UTF-8">
@@ -8,6 +8,15 @@
 	<title>Document</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
 	<link rel="stylesheet" href="style.css">
+	<style>
+		*:focus {
+			border: 3px salmon solid !important;
+		}
+
+		*:hover {
+			background-color: rgb(89, 202, 114) !important;
+		}
+	</style>
 </head>
 
 <body>
@@ -19,7 +28,16 @@
 		</div>
 		<ul id="mainNav">
 			<li><a href="#">品牌故事</a></li>
-			<li><a href="#">最新消息</a></li>
+			<li>最新消息
+				<ul>
+					<li><a href="#">美味餐點</a></li>
+					<li><a href="#">漢堡系列</a></li>
+					<li><a href="#">三明治系列</a></li>
+					<li><a href="#">披薩系列</a></li>
+					<li><a href="#">義大利麵系列</a></li>
+					<li><a href="#">飲料系列</a></li>
+				</ul>
+			</li>
 			<li id="logo-desk"><a class="logo" href="index.html"><img src="https://via.placeholder.com/90x90?text=Logo" alt=""></a></li>
 			<li class="click-on">美食饗宴
 				<ul>
@@ -42,8 +60,15 @@
 		function mainNavEff() {
 			if (window.innerWidth > 480) {
 				$('#mainNav').css('display', '');
-				$('#mainNav > li').children('ul').hide();
-				$('#mainNav > li').off('mouseenter mouseleave click')
+				$('#mainNav > li').off('mouseenter mouseleave click');
+
+				// $('#mainNav > li').children('ul').hide();
+				/* ↑↑↑原本這樣寫，但平板時會有bug：
+				因為平板是觸控但寬度>480，所以直接隱藏的話，會遇到已經是hover但沒顯示 又無法再次hover的情況 */
+
+				/* ↓↓↓改成這樣寫：如果不是hover狀態 才隱藏 */
+				$('#mainNav > li:not(:hover)').children('ul').hide();
+
 				$('#mainNav > li').hover(function () {
 					$(this).children('ul').stop().slideToggle('fast')
 				})
@@ -60,9 +85,20 @@
 			}
 		}
 		$(function () {
+			// 記錄住目前的視窗寬度，為了之後比對是否真的有resize
+			var windowWidth = jQuery(window).width();
+
 			mainNavEff();
+
 			$(window).resize(function () {
-				mainNavEff();
+				// 因為手機滑動時 有時也會觸發resize，所以要比對確認是否真的有resize
+				// 真的resize才執行該做的事
+				if (jQuery(window).width() != windowWidth) {
+					// 更新視窗寬度(下次才能正確比對是否resize)
+					windowWidth = jQuery(window).width();
+					// 需要執行的動作：
+					mainNavEff();
+				}
 			})
 		})
 	</script>

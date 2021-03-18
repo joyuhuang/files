@@ -106,8 +106,10 @@
 
       // 依選擇的星期，改變出現的選項---------------------------
       $('#datepicker1').change(function () {
-        var userDate = new Date($('#datepicker1').val());
+        // var userDate = new Date($('#datepicker1').val());
+        var userDate = $( "#datepicker1").datepicker( "getDate" );
         var w = userDate.getDay();
+        console.log(w);
         // 讓select不選任何項目(空白)
         document.getElementById("time").selectedIndex = -1;
 
