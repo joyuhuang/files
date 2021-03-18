@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<!--[if lt IE 9]>
+<script type="text/javascript" src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>jQuery UI(已過去的日期disabled)</title>
+  <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/themes/hot-sneaks/jquery-ui.css" rel="stylesheet">
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="../jquery/jquery.ui.datepicker-zh-TW.js"></script>
+  <style>
+    body {
+      font: 85% "Trebuchet MS", sans-serif;
+      margin: 50px;
+    }
+
+    .inline-box {
+      display: inline-block;
+      margin-right: 20px;
+    }
+
+    label {
+      display: block;
+    }
+
+    .holidays .ui-state-default {
+      background: #ffd6a7;
+    }
+  </style>
+</head>
+
+<body>
+  <input id="deadline" type="hidden" value="24:00:00">
+  <div class="inline-box">
+    <label for="datepicker1">請選擇日期</label>
+    <input id="datepicker1" type="text">
+  </div>
+  <div class="inline-box">
+    <label for="time">請選擇時段</label>
+    <select name="time" id="time">
+      <!-- <option value="" selected disabled style="display: none;">--請選擇時段--</option> -->
+      <option value="晚上6:30〜7:00" class="weekdays">晚上6:30〜7:00</option>
+      <option value="晚上7:30〜8:00" class="weekdays">晚上7:30〜8:00</option>
+      <option value="下午1:00〜2:00" class="weekends">下午1:00〜2:00</option>
+      <option value="下午2:00〜3:00" class="weekends">下午2:00〜3:00</option>
+      <option value="下午3:00〜4:00" class="weekends">下午3:00〜4:00</option>
+      <option value="下午4:00〜5:00" class="weekends">下午4:00〜5:00</option>
+    </select>
+  </div>
+
+
+  <script language="JavaScript">
+    $(document).ready(function () {
+      // 讓select不選任何項目(空白)
+      document.getElementById("time").selectedIndex = -1;
+      $('.weekdays,.weekends').hide();
+
+      // datepicker設定---------------------------------------
+      // 國定假日清單 (2021,2022)
+      var holidaysList = ["2021/1/1", "2021/2/10", "2021/2/11", "2021/2/12", "2021/2/13", "2021/2/14", "2021/2/15", "2021/2/16", "2021/2/28", "2021/3/1", "2021/4/2", "2021/4/4", "2021/4/5", "2021/5/1", "2021/6/14", "2021/9/20", "2021/9/21", "2021/10/10", "2021/10/11", "2021/12/31", "2022/1/1", "2022/1/31", "2022/2/1", "2022/2/2", "2022/2/3", "2022/2/4", "2022/2/28", "2022/4/5", "2022/5/1", "2022/6/3", "2022/9/10", "2022/10/10"];
+
+      function noSundayOrHolidays(date) {
+        // 星期日disabled
+        if (date.getDay() == 0) {
+          return [false, ''];  //星期日=0 就會回傳false，於是就會被disabled
+        }
+
+        // 判斷是否為假日
+        for (i = 0; i < holidaysList.length; i++) {
+          var holiday = new Date(holidaysList[i]);
+          if (date - holiday == 0) {
+            return [false, 'holidays']; //第2個值是要添加的class名稱
+          }
+        }
+        return [true, ''];
+      }
+
+      //開啟年+月的選擇....順序要對, 不然會失效
+      $("#datepicker1").datepicker({
+        changeYear: true,
+        changeMonth: true,
+        //yearRange:"-0:+1", 
+        minDate: 0,
+        maxDate: "+1Y",
+        //beforeShowDay: $.datepicker.noWeekends,   //六日disabled(不能選)
+        beforeShowDay: noSundayOrHolidays,          //日disabled(不能選)
+        showMonthAfterYear: true,                    //顯示年復一年
+        dateFormat: "yy-mm-dd",                      //顯示順序
+      });
+      //中文化
+      $.datepicker.regional['zh-TW'] = {
+        dayNames: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
+        dayNamesMin: ["日", "一", "二", "三", "四", "五", "六"],
+        monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+        monthNamesShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+        prevText: "上月",
+        nextText: "次月",
+        weekHeader: "週"
+      };
+
+      $.datepicker.setDefaults($.datepicker.regional["zh-TW"]);
+      // datepicker設定 end-----------------------------------
+
+      // 依選擇的星期，改變出現的選項---------------------------
+      $('#datepicker1').change(function () {
+        var userDate = new Date($('#datepicker1').val());
+        var w = userDate.getDay();
+        // 讓select不選任何項目(空白)
+        document.getElementById("time").selectedIndex = -1;
+
+        if (w == 6) {
+          $('.weekdays').hide();
+          $('.weekends').show();
+        } else {
+          $('.weekdays').show();
+          $('.weekends').hide();
+        }
+      })
+    });
+  </script>
+</body>
