@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+	<style>
+		.area {
+			width: 500px;
+			height: 300px;
+			position: relative;
+			border: 4px dashed #000;
+			opacity: 0.5;
+
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin: auto;
+		}
+
+		.area:hover,
+		.area.dragging,
+		.area.uploading {
+			opacity: 1;
+		}
+
+		.area {
+			background-color: #ceeaeb;
+		}
+
+		.area:hover {
+			background-color: #71d8db;
+		}
+
+		.area.dragging {
+			background-color: #4ec2a5;
+		}
+
+		input {
+			width: 100%;
+			height: 100%;
+			font-size: 0;
+			cursor: pointer;
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			opacity: 0;
+			/* margin-left: -300%; */
+		}
+
+		input:focus {
+			outline: none;
+		}
+	</style>
+</head>
+
+<body>
+	<form action="#" class="area">
+		<span class="h4">Drop files here or click to upload.</span>
+		<input type="file" multiple="multiple" id="upload" />
+	</form>
+	<div id="fileInfo" class="container text-center">no file</div>
+
+
+	<script>
+		const upload = document.getElementById('upload'),
+			validExts = new Array(".png", ".ai"),//可接受的附檔名
+			maxSize = 3;//檔案大小限制(MB)
+
+		let oldFiles = new DataTransfer();
+
+		function uploadFiles() {
+			if (upload.files.length > 0) {
+				for (let i = upload.files.length - 1; i >= 0; i--) {
+					checkFile(i, 'add');
+				}
+				upload.onchange = null // remove event listener
+				upload.files = oldFiles.files // this will trigger a change event
+				updateInfo();
+			} else {
+				for (let i = upload.files.length - 1; i >= 0; i--) {
+					checkFile(i);
+				}
+				oldFiles.files = upload.files;
+				updateInfo();
+			}
+		}
+		function checkFile(i, action) {
+			const file = upload.files[i];
+
+			let fileExt = file.name.substring(file.name.lastIndexOf('.'));
+			if (validExts.indexOf(fileExt) < 0) {
+				window.alert(file.name + ' 檔案類型錯誤，可接受的副檔名有：*' + validExts.join('/*'));
+				// upload.value = '';
+				removeFile(i);
+			} else {
+				if (file.size < (maxSize * 1000 * 1024)) {
+					upload.parentNode.className = 'area uploading';
+					if (action === 'add') {
+						oldFiles.items.add(file);
+					}
+				} else {
+					window.alert('檔案大小超過限制，不能超過 ' + maxSize + 'MB');
+					removeFile(i);
+				}
+			}
+		}
+
+		function removeFile(i) {
+			const dt = new DataTransfer()
+			// This will remove the [i] item
+			for (let file of upload.files) {
+				if (file !== upload.files[i]) {
+					dt.items.add(file)
+				}
+			}
+			upload.onchange = null // remove event listener
+			upload.files = dt.files // this will trigger a change event
+		}
+		function updateInfo() {
+			const infoBox = document.getElementById('fileInfo');
+			if (upload.value !== '') {
+				let data = '<div class="row bg-white p-3"><h6 class="col-4 text-center">名稱</h6><h6 class="col-4 text-center">格式</h6><h6 class="col-4 text-center">動作</h6></div>';
+				for (let i = upload.files.length - 1; i >= 0; i--) {
+					const file = upload.files[i],
+						extPos = file.name.lastIndexOf('.'),
+						fileName = file.name.substring(0, extPos),
+						fileExt = file.name.substring(extPos);
+					data += '<div class="row d-flex align-items-center bg-white shadow-sm p-3"><div class="col-4">' + fileName + '</div><div class="col-4 text-center">' + fileExt + '</div><div class="col-4 text-center"><button class="btn btn-danger" onclick="removeFile(' + i + ');updateInfo();">刪除</button></div></div>';
+
+				}
+				infoBox.innerHTML = data;
+
+			} else {
+				infoBox.innerHTML = "no file";
+			}
+		}
+
+		upload.addEventListener('dragenter', function (e) {
+			upload.parentNode.className = 'area dragging';
+		}, false);
+
+		upload.addEventListener('dragleave', function (e) {
+			upload.parentNode.className = 'area';
+		}, false);
+
+		upload.addEventListener('dragdrop', function (e) {
+			uploadFiles();
+			upload.parentNode.className = 'area';
+		}, false);
+
+		upload.addEventListener('change', function (e) {
+			if (upload.files.length == 0) {
+				return;
+			} else {
+				uploadFiles();
+				upload.parentNode.className = 'area';
+			}
+		}, false);
+	</script>
+</body>
+
+</html>
