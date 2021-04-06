@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+	<head>
+		<title>Nature care</title>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<style></style>
+		<script>
+			$(function () {
+				$('#pAddForm').submit(function () {
+					var pData = new FormData();
+					pData.append('p_type', $('#p_type').val());
+					pData.append('p_name', $('#p_name').val());
+					pData.append('p_price', $('#p_price').val());
+					pData.append('p_desc', $('#p_desc').val());
+					pData.append('p_spec', $('#p_spec').val());
+					pData.append('p_status', $('#p_status').val());
+					pData.append('p_img', $('#p_img').prop('files')[0]);
+
+					$.ajax({
+						url: 'productAddQ.php',
+						type: 'post',
+						data: pData,
+						contentType: false,
+						processData: false,
+						error: function () {
+							alert('err');
+						},
+						success: function (info) {
+							if (info == 'added') {
+								$('#msg').html('商品已新增').addClass('msg');
+								$('[type="text"],[type="file"],textarea').val('');
+								$('.pvImg').prop('src', '');
+							} else {
+								$('#msg').html('商品新增失敗').addClass('msg err');
+							}
+						},
+					});
+					return false;
+				});
+
+				$('#p_img').change(function () {
+					var imgFile = this.files[0];
+					var imgReader = new FileReader();
+
+					imgReader.readAsDataURL(imgFile);
+					imgReader.onload = function (e) {
+						$('.pvImg').attr('src', e.target.result).attr('width', 200).hide().fadeIn();
+					};
+				});
+			});
+		</script>
+	</head>
+
+	<body>
+		<main>
+			<h1>商品新增頁面</h1>
+			<div id="msg"></div>
+			<form id="pAddForm" class="dataForm">
+				<p>
+					<label for="p_type">商品類別：</label>
+					<select name="p_type" id="p_type">
+						<option value="1">手工皂</option>
+						<option value="2">草本精油</option>
+					</select>
+				</p>
+				<p>
+					<label for="p_name">商品名稱：</label>
+					<input type="text" id="p_name" name="p_name" />
+				</p>
+				<p>
+					<label for="p_price">單價：</label>
+					<input type="text" id="p_price" name="p_price" />
+				</p>
+				<p>
+					<label for="p_img">商品圖片：</label>
+					<img class="pvImg" />
+					<input type="file" id="p_img" name="p_img" accept="image/jpeg" />
+				</p>
+				<p>
+					<label for="p_desc">商品介紹：</label>
+					<textarea name="p_desc" id="p_desc"></textarea>
+				</p>
+				<p>
+					<label for="p_spec">商品規格：</label>
+					<textarea name="p_spec" id="p_spec"></textarea>
+				</p>
+				<p>
+					<label for="p_status">商品狀態：</label>
+					<select name="p_status" id="p_status">
+						<option value="1">正常</option>
+						<option value="0">缺貨</option>
+					</select>
+				</p>
+				<p class="formBtn">
+					<input type="submit" id="submit" value="新增" />
+					<input type="reset" id="reset" />
+				</p>
+			</form>
+		</main>
+	</body>
+</html>
